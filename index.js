@@ -20,10 +20,10 @@ server.listen(3000);
 var T = new Twit(config);
 
 // https://dev.twitter.com/streaming/overview/request-parameters#locations
-var cu = [ '-88.45', '40.04','-88.10', '40.19' ];
+var location = [ '-88.45', '40.04','-88.10', '40.19' ];
 
 io.sockets.on('connection', function (socket) {
-    var stream = T.stream('statuses/filter', { locations: cu });
+    var stream = T.stream('statuses/filter', { locations: location });
     stream.on('tweet', function (tweet) {
       io.sockets.emit('tweet', tweet);
     })
