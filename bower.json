@@ -1,0 +1,21 @@
+{
+  "name": "twitter-streaming-socketio",
+  "main": "index.js",
+  "version": "0.0.0",
+  "authors": [
+    "Brock Angelo <brockangelo@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.2"
+  }
+}
