@@ -1,6 +1,9 @@
 # twitter-streaming-socketio
 Example ExpressJS application that uses SocketIO and Bootstrap to show a steady stream of nearby tweets
 
+## Demo
+![demo](http://f.cl.ly/items/231H3p0L1N382g0h0X19/nearby-tweets.gif)
+
 ## Setup
 
 This project uses the [twit](https://github.com/ttezel/twit) NPM module to utilize the Twitter Streaming API, so you will need to register a new app at [apps.twitter.com](https://apps.twitter.com/app/new) and get a consumer key and access token (this is free).
