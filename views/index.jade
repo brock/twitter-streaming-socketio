@@ -30,20 +30,27 @@ html(lang='en')
             hr
         script(src="/bower_components/jquery/dist/jquery.min.js")
         script(src='/bower_components/bootstrap/dist/js/bootstrap.min.js')
+        script(src='/bower_components/underscore/underscore.js')
+        script(src='/bower_components/backbone/backbone.js')
         script(src="/socket.io/socket.io.js")
         script.
-            var socket = io.connect('http://localhost:3000');
-            socket.on('tweet', function (tweet) {
+            var display = function(tweet) {
                 console.log(tweet);
                 $("#tweets").prepend(
-                    '<div class="row">' +
+                        '<div class="row">' +
                         '<div class="col-mid-12">' +
-                            '<h2>' +
-                                tweet.text +
-                            '</h2>' +
-                            '<p>@'+tweet.user.screen_name+'</p>' +
-                            '<img src="' + tweet.user.profile_image_url + '"></img>' +
+                        '<h2>' +
+                        tweet.get('text') +
+                        '</h2>' +
+                        '<p>@'+tweet.get('user')['screen_name']+'</p>' +
+                        '<img src="' + tweet.get('user')['profile_image_url'] + '"></img>' +
                         '</div>' +
-                    '</div>'
+                        '</div>'
                 );
+            }
+            var tweets = new Backbone.Collection;
+            tweets.on('add', display);
+            var socket = io.connect('http://localhost:3000');
+            socket.on('tweet', function (tweet) {
+                tweets.add(tweet);
             })
