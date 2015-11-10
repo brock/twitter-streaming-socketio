@@ -34,24 +34,51 @@ html(lang='en')
         script(src='/bower_components/backbone/backbone.js')
         script(src="/socket.io/socket.io.js")
         script.
-            var display = function(tweet) {
-                console.log(tweet);
-                $("#tweets").prepend(
-                        '<div class="row">' +
-                        '<div class="col-mid-12">' +
-                        '<h2><a target="_blank" href="https://twitter.com/' + tweet.get('user')['screen_name'] + '/status/' + tweet.get('id_str') + '">' +
-                        tweet.get('text') +
-                        '</a></h2>' +
-                        '<p>@'+tweet.get('user')['screen_name']+'</p>' +
-                        '<img src="' + tweet.get('user')['profile_image_url'] + '"></img>' +
-                        '</p>' +
-                        '</div>' +
-                        '</div>'
-                );
+          var tweets = new Backbone.Collection;
+          tweets.on('add', display);
+          var socket = io.connect('http://localhost:3000');
+
+          function setPosition(location){
+            if (location && location.coords) {
+              var locationArray = [
+                +(+location.coords.longitude.toPrecision(5) - 0.005).toPrecision(5),
+                +(+location.coords.latitude.toPrecision(5) - 0.005).toPrecision(5),
+                +(+location.coords.longitude.toPrecision(5) + 0.005).toPrecision(5),
+                +(+location.coords.latitude.toPrecision(5) + 0.00).toPrecision(5)
+              ];
+              socket.emit('location', locationArray);
             }
-            var tweets = new Backbone.Collection;
-            tweets.on('add', display);
-            var socket = io.connect('http://localhost:3000');
-            socket.on('tweet', function (tweet) {
-                tweets.add(tweet);
-            })
+          }
+          function getLocation() {
+            if(navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(setPosition);
+            }
+            else {
+              alert("Geolocation is not supported by this browser.");
+            }
+          }
+          getLocation();
+
+          function display(tweet) {
+            var tweetID = tweet.get('id_str');
+            var screenName = tweet.get('user')['screen_name'];
+            var tweetLocation = tweet.get('place')['full_name'];
+            var tweetText = tweet.get('text');
+            var profileImg = tweet.get('user')['profile_image_url'];
+            if (tweetLocation) screenName = screenName + ' - ' + tweetLocation;
+            $("#tweets").prepend(
+              '<div class="row">' +
+              '<div class="col-mid-12">' +
+              '<h2><a target="_blank" href="https://twitter.com/' + screenName + '/status/' + tweetID + '">' +
+              tweetText + '</a></h2>' +
+              '<p>@' + screenName + '</p>' +
+              '<img src="' + profileImg + '"></img>' +
+              '</div>' +
+              '</div>'
+            );
+          }
+
+          socket.on('tweet', function(tweet) {
+            tweets.add(tweet);
+          });
+

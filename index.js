@@ -34,9 +34,11 @@ var london = [ '-0.18', '51.47', '-0.00', '51.55' ];
 var tokyo = [ '139.18', '35.36', '140.13', '35.93' ];
 
 io.sockets.on('connection', function (socket) {
-    var stream = T.stream('statuses/filter', { locations: champaign });
-    stream.on('tweet', function (tweet) {
-      io.sockets.emit('tweet', tweet);
-    })
+    socket.on('location', function(location) {
+      var stream = T.stream('statuses/filter', {locations: location});
+      stream.on('tweet', function(tweet) {
+        io.sockets.emit('tweet', tweet);
+      });
+    });
 });
 
