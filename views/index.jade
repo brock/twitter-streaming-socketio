@@ -39,11 +39,12 @@ html(lang='en')
                 $("#tweets").prepend(
                         '<div class="row">' +
                         '<div class="col-mid-12">' +
-                        '<h2>' +
+                        '<h2><a target="_blank" href="https://twitter.com/' + tweet.get('user')['screen_name'] + '/status/' + tweet.get('id_str') + '">' +
                         tweet.get('text') +
-                        '</h2>' +
+                        '</a></h2>' +
                         '<p>@'+tweet.get('user')['screen_name']+'</p>' +
                         '<img src="' + tweet.get('user')['profile_image_url'] + '"></img>' +
+                        '</p>' +
                         '</div>' +
                         '</div>'
                 );
