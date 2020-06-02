@@ -5,7 +5,7 @@ var express = require('express')
     , path = require('path')
     , Twit = require('twit')
     , io = require('socket.io').listen(server)
-    , config = require('config');
+    , config = require('./config');
     
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
